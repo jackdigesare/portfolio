@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import html
 import json
 import os
 from typing import Any, Iterator
@@ -12,6 +13,180 @@ from google import genai
 from google.genai import types
 
 MODEL = "gemini-3.5-flash"
+
+STYLES = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
+
+:root {
+  --bg: #0b0a1a;
+  --ink: #f3f0ff;
+  --muted: #a39bb8;
+  --accent: #7c5cff;
+  --accent-2: #4f46e5;
+  --surface: #16132a;
+  --line: rgba(243, 240, 255, 0.12);
+  --radius: 8px;
+}
+
+html, body, [class*="css"] {
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  color: var(--ink);
+}
+
+.stApp {
+  background:
+    radial-gradient(900px 420px at 80% -5%, rgba(124, 92, 255, 0.28), transparent 55%),
+    radial-gradient(700px 380px at 0% 20%, rgba(79, 70, 229, 0.18), transparent 50%),
+    var(--bg);
+}
+
+.stApp::before { display: none; }
+
+.block-container {
+  max-width: 880px;
+  padding-top: 2.75rem;
+  padding-bottom: 4rem;
+}
+
+#MainMenu, footer, header { visibility: hidden; height: 0; }
+
+.aa-hero { margin-bottom: 1.75rem; }
+.aa-brand {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.75rem, 7vw, 3.75rem);
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0 0 0.75rem 0;
+}
+.aa-brand span {
+  color: var(--accent);
+}
+.aa-lede {
+  font-size: 1.08rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 32rem;
+  margin: 0;
+}
+.aa-rule {
+  width: 2.75rem;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  margin: 1.15rem 0 0 0;
+  border: 0;
+  border-radius: 2px;
+}
+
+.aa-section { margin: 2.1rem 0 0.75rem 0; }
+.aa-section h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.3rem 0;
+  color: var(--ink);
+}
+.aa-section p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"] {
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  border-left: 4px solid var(--accent) !important;
+  border-radius: var(--radius) !important;
+  padding: 0.45rem 0.65rem;
+}
+
+.aa-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.35rem;
+  margin: 0.25rem 0 0.85rem 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.aa-meta strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.aa-empty {
+  margin-top: 0.65rem;
+  color: var(--muted);
+}
+
+[data-testid="stFileUploader"] section {
+  border: 1.5px dashed rgba(124, 92, 255, 0.55) !important;
+  background: rgba(124, 92, 255, 0.08) !important;
+  border-radius: var(--radius) !important;
+}
+[data-testid="stFileUploader"] section:hover {
+  border-color: var(--accent) !important;
+  background: rgba(124, 92, 255, 0.14) !important;
+}
+
+div[data-testid="stExpander"] {
+  border: 1px solid var(--line) !important;
+  background: var(--surface) !important;
+  border-radius: var(--radius) !important;
+}
+
+[data-testid="stChatMessage"] { background: transparent !important; }
+
+.stChatInput textarea, [data-testid="stChatInput"] {
+  border-radius: var(--radius) !important;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 1.75rem 0;
+}
+
+/* Streamlit text / widgets on dark */
+.stMarkdown, .stCaption, p, label, .stText { color: var(--ink); }
+[data-testid="stWidgetLabel"] p { color: var(--muted) !important; }
+
+@media (max-width: 640px) {
+  .block-container { padding-top: 1.5rem; }
+  .aa-brand { font-size: 2.4rem; }
+}
+</style>
+"""
+
+
+def apply_styles() -> None:
+    st.markdown(STYLES, unsafe_allow_html=True)
+
+
+def render_hero() -> None:
+    st.markdown(
+        """
+        <div class="aa-hero">
+          <h1 class="aa-brand">AI <span>Analyst</span></h1>
+          <p class="aa-lede">
+            Upload a spreadsheet. Get a clean profile, plain-English insights,
+            and a place to ask follow-up questions — without sending raw rows to the model.
+          </p>
+          <hr class="aa-rule" />
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def section(title: str, subtitle: str = "") -> None:
+    sub = f"<p>{subtitle}</p>" if subtitle else ""
+    st.markdown(
+        f'<div class="aa-section"><h2>{title}</h2>{sub}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def get_api_key() -> str:
@@ -182,18 +357,28 @@ def profiles_to_display_df(profiles: list[dict[str, Any]]) -> pd.DataFrame:
 
 
 def main() -> None:
-    st.set_page_config(page_title="AI Analyst", page_icon="📊", layout="wide")
-    st.title("AI Analyst")
-    st.caption("Upload a dataset for automated profiling and Gemini-powered insights.")
+    st.set_page_config(
+        page_title="AI Analyst",
+        page_icon="◈",
+        layout="centered",
+        initial_sidebar_state="collapsed",
+    )
+    apply_styles()
+    render_hero()
 
     uploaded = st.file_uploader(
-        "Upload a CSV or Excel file",
+        "Drop a CSV or Excel file",
         type=["csv", "xlsx"],
         help="Accepted formats: .csv, .xlsx",
+        label_visibility="collapsed",
     )
 
     if uploaded is None:
-        st.info("Upload a `.csv` or `.xlsx` file to get started.")
+        st.markdown(
+            '<p class="aa-empty">Start with a <strong>.csv</strong> or <strong>.xlsx</strong> file. '
+            "We’ll profile columns locally, then ask Gemini about the summary only.</p>",
+            unsafe_allow_html=True,
+        )
         return
 
     file_id = f"{uploaded.name}:{uploaded.size}"
@@ -232,18 +417,24 @@ def main() -> None:
                 st.error(f"Gemini API error: {exc}")
                 return
 
-    st.subheader("Gemini analysis")
-    st.markdown(st.session_state.analysis)
+    section("Insights", "What this dataset looks like, quality flags, and questions worth asking.")
+    with st.container(border=True):
+        st.markdown(st.session_state.analysis)
 
-    st.subheader("Data preview")
-    st.dataframe(df.head(100), use_container_width=True)
-    st.caption(f"{len(df):,} rows × {len(df.columns)} columns (showing first 100 rows)")
+    section("Data preview", f"Showing the first 100 of {len(df):,} rows · {len(df.columns)} columns")
+    safe_name = html.escape(uploaded.name)
+    st.markdown(
+        f'<div class="aa-meta"><span><strong>File</strong> {safe_name}</span>'
+        f"<span><strong>Shape</strong> {len(df):,} × {len(df.columns)}</span></div>",
+        unsafe_allow_html=True,
+    )
+    st.dataframe(df.head(100), use_container_width=True, hide_index=True)
 
-    with st.expander("Profiling stats", expanded=False):
-        st.dataframe(profiles_to_display_df(profiles), use_container_width=True)
+    with st.expander("Column profiling", expanded=False):
+        st.dataframe(profiles_to_display_df(profiles), use_container_width=True, hide_index=True)
 
     st.divider()
-    st.subheader("Ask a follow-up question")
+    section("Ask a follow-up", "Questions use the profiling summary only — not the raw spreadsheet.")
 
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
