@@ -33,3 +33,9 @@ Messages are sent from your domain; the visitor’s address is set as Reply-To.
 ### Vercel
 
 In the Vercel project → Settings → Environment Variables, add `RESEND_API_KEY` (and optionally `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`) for Production (and Preview if you want to test there). Redeploy after saving.
+
+The contact endpoint sends email, so protect `/api/contact` with a
+[Vercel WAF rate-limit rule](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
+A fixed window of 5 requests per 10 minutes keyed by IP is a reasonable
+starting point for this form. Keep the recipient fixed to `CONTACT_TO_EMAIL`;
+never send mail to a submitted address without first verifying ownership.
