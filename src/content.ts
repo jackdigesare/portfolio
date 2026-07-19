@@ -23,4 +23,10 @@ export const projects = [
       "Streamlit app that profiles CSV/Excel data and uses Gemini for insights and follow-up Q&A.",
     href: "https://ai-analyst-assistants.streamlit.app/",
   },
+  {
+    title: "Fantasy Intel",
+    description:
+      "Streamlit app to download current Sleeper fantasy football rosters as CSV or Excel.",
+    href: "https://fantasy-intel.streamlit.app/",
+  },
 ];
