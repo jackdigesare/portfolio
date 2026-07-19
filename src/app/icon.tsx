@@ -13,15 +13,27 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#111111",
-          color: "#ffffff",
-          fontSize: 16,
-          fontWeight: 700,
-          letterSpacing: "-0.06em",
-          fontFamily: "system-ui, sans-serif",
+          background: "transparent",
         }}
       >
-        JD
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 16,
+            background: "#111111",
+            color: "#ffffff",
+            fontSize: 13,
+            fontWeight: 700,
+            lineHeight: 1,
+            fontFamily: "system-ui, sans-serif",
+          }}
+        >
+          JD
+        </div>
       </div>
     ),
     { ...size },
