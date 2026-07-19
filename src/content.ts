@@ -5,7 +5,7 @@
 export const site = {
   name: "Jack DiGesare",
   title: "Jack DiGesare — Portfolio",
-  email: "hello@example.com",
+  email: "jackdigesare@pm.me",
   tagline: "Designer & developer.",
   location: "New York, NY",
   about:
