@@ -7,7 +7,7 @@ export const site = {
   title: "Jack DiGesare — Portfolio",
   email: "jackdigesare@pm.me",
   tagline: "Designer & developer.",
-  location: "New York, NY",
+  location: "Brooklyn, NY",
   about:
     "I build simple, usable digital tools. This site is a work in progress.",
   social: {
