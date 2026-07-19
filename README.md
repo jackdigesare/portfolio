@@ -21,14 +21,15 @@ The Contact section Email control expands an in-page form that sends mail via [R
 ```bash
 RESEND_API_KEY=re_xxxxxxxx
 CONTACT_TO_EMAIL=jackdigesare@pm.me
+CONTACT_FROM_EMAIL=Jack DiGesare <contact@jackdigesare.dev>
 ```
 
-`CONTACT_TO_EMAIL` is optional; it defaults to the address in `src/content.ts`.
+`CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` are optional; they default to your ProtonMail inbox and `contact@jackdigesare.dev` on the verified Resend domain.
 
 3. Restart `npm run dev` and send a test message from the form.
 
-Until you verify a custom domain in Resend, messages are sent from `onboarding@resend.dev` to your inbox, with the visitor’s address as Reply-To.
+Messages are sent from your domain; the visitor’s address is set as Reply-To.
 
 ### Vercel
 
-In the Vercel project → Settings → Environment Variables, add the same keys (`RESEND_API_KEY`, and optionally `CONTACT_TO_EMAIL`) for Production (and Preview if you want to test there). Redeploy after saving.
+In the Vercel project → Settings → Environment Variables, add `RESEND_API_KEY` (and optionally `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`) for Production (and Preview if you want to test there). Redeploy after saving.

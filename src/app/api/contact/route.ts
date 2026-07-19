@@ -64,10 +64,13 @@ export async function POST(request: Request) {
   }
 
   const to = process.env.CONTACT_TO_EMAIL?.trim() || site.email;
+  const from =
+    process.env.CONTACT_FROM_EMAIL?.trim() ||
+    `${site.name} <contact@jackdigesare.dev>`;
   const resend = new Resend(apiKey);
 
   const { error } = await resend.emails.send({
-    from: "Portfolio <onboarding@resend.dev>",
+    from,
     to: [to],
     replyTo: email,
     subject: `Portfolio message from ${name}`,
