@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jack DiGesare — Portfolio
+
+Personal portfolio site built with Next.js.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contact form (Resend)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Contact section Email control expands an in-page form that sends mail via [Resend](https://resend.com).
 
-## Learn More
+1. Create an API key at [resend.com/api-keys](https://resend.com/api-keys).
+2. Copy `.env.example` to `.env.local` and set:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+RESEND_API_KEY=re_xxxxxxxx
+CONTACT_TO_EMAIL=jackdigesare@pm.me
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`CONTACT_TO_EMAIL` is optional; it defaults to the address in `src/content.ts`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Restart `npm run dev` and send a test message from the form.
 
-## Deploy on Vercel
+Until you verify a custom domain in Resend, messages are sent from `onboarding@resend.dev` to your inbox, with the visitor’s address as Reply-To.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In the Vercel project → Settings → Environment Variables, add the same keys (`RESEND_API_KEY`, and optionally `CONTACT_TO_EMAIL`) for Production (and Preview if you want to test there). Redeploy after saving.

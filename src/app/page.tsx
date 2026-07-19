@@ -1,4 +1,5 @@
 import { projects, site } from "@/content";
+import { ContactForm } from "@/components/ContactForm";
 import { SiteNav } from "@/components/SiteNav";
 
 export default function Home() {
@@ -49,15 +50,16 @@ export default function Home() {
           <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
             Contact
           </h2>
-          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-ink">
-            <a href={`mailto:${site.email}`}>Email</a>
-            <a href={site.social.github} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            <a href={site.social.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
-          </p>
+          <div className="mt-3 text-ink">
+            <ContactForm>
+              <a href={site.social.github} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a href={site.social.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </ContactForm>
+          </div>
         </section>
       </main>
     </>
