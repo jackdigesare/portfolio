@@ -21,6 +21,6 @@ export const projects = [
     title: "AI Analyst",
     description:
       "Streamlit app that profiles CSV/Excel data and uses Gemini for insights and follow-up Q&A.",
-    href: "https://data-analyst-ai-assistant.streamlit.app/",
+    href: "https://ai-analyst-assistants.streamlit.app/",
   },
 ];
