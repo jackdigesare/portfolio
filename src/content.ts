@@ -20,8 +20,8 @@ export const projects = [
   {
     title: "AI Analyst",
     description:
-      "Streamlit app that profiles CSV/Excel data and uses Claude for insights and follow-up Q&A.",
-    href: "https://github.com/jackdigesare/personal_portfolio/tree/main/ai-analyst",
+      "Streamlit app that profiles CSV/Excel data and uses Gemini for insights and follow-up Q&A.",
+    href: "https://github.com/jackdigesare/portfolio/tree/cursor/ai-analyst/ai-analyst",
   },
   {
     title: "Project two",

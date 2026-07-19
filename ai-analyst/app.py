@@ -1,37 +1,43 @@
-"""AI Analyst — Streamlit app for data profiling and Claude-powered insights."""
+"""AI Analyst — Streamlit app for data profiling and Gemini-powered insights."""
 
 from __future__ import annotations
 
 import json
 import os
-from typing import Any
+from typing import Any, Iterator
 
 import pandas as pd
 import streamlit as st
-from anthropic import Anthropic
+from google import genai
+from google.genai import types
 
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "gemini-3.5-flash"
 
 
 def get_api_key() -> str:
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    api_key = os.environ.get("GEMINI_API_KEY", "") or os.environ.get("GOOGLE_API_KEY", "")
     if api_key:
         return api_key
     try:
-        return str(st.secrets["ANTHROPIC_API_KEY"])
+        return str(st.secrets["GEMINI_API_KEY"])
+    except Exception:
+        pass
+    try:
+        return str(st.secrets["GOOGLE_API_KEY"])
     except Exception:
         return ""
 
 
-def get_client() -> Anthropic:
+def get_client() -> genai.Client:
     api_key = get_api_key()
     if not api_key:
         st.error(
-            "Missing `ANTHROPIC_API_KEY`. Set it as an environment variable "
-            "or add it to `.streamlit/secrets.toml`."
+            "Missing `GEMINI_API_KEY`. Get a free key at "
+            "[Google AI Studio](https://aistudio.google.com/apikey), then set it "
+            "as an environment variable or in `.streamlit/secrets.toml`."
         )
         st.stop()
-    return Anthropic(api_key=api_key)
+    return genai.Client(api_key=api_key)
 
 
 def load_dataframe(uploaded_file) -> pd.DataFrame:
@@ -86,7 +92,7 @@ def profile_dataframe(df: pd.DataFrame) -> list[dict[str, Any]]:
 
 
 def profiling_summary_text(df: pd.DataFrame, profiles: list[dict[str, Any]]) -> str:
-    """Compact text summary of shape + profiling — safe to send to Claude."""
+    """Compact text summary of shape + profiling — safe to send to Gemini."""
     payload = {
         "shape": {"rows": int(len(df)), "columns": int(len(df.columns))},
         "column_names": [str(c) for c in df.columns],
@@ -119,29 +125,41 @@ PROFILING SUMMARY:
 """
 
 
-def analyze_with_claude(client: Anthropic, summary: str) -> str:
-    message = client.messages.create(
+def analyze_with_gemini(client: genai.Client, summary: str) -> str:
+    response = client.models.generate_content(
         model=MODEL,
-        max_tokens=1500,
-        messages=[{"role": "user", "content": ANALYSIS_PROMPT.format(summary=summary)}],
+        contents=ANALYSIS_PROMPT.format(summary=summary),
     )
-    return message.content[0].text
+    return response.text or ""
 
 
-def stream_chat_reply(client: Anthropic, summary: str, question: str, history: list[dict[str, str]]):
-    messages: list[dict[str, Any]] = []
+def _history_to_contents(history: list[dict[str, str]], question: str) -> list[types.Content]:
+    contents: list[types.Content] = []
     for turn in history:
-        messages.append({"role": turn["role"], "content": turn["content"]})
-    messages.append({"role": "user", "content": question})
+        role = "user" if turn["role"] == "user" else "model"
+        contents.append(
+            types.Content(role=role, parts=[types.Part.from_text(text=turn["content"])])
+        )
+    contents.append(types.Content(role="user", parts=[types.Part.from_text(text=question)]))
+    return contents
 
-    with client.messages.stream(
+
+def stream_chat_reply(
+    client: genai.Client,
+    summary: str,
+    question: str,
+    history: list[dict[str, str]],
+) -> Iterator[str]:
+    stream = client.models.generate_content_stream(
         model=MODEL,
-        max_tokens=1500,
-        system=CHAT_SYSTEM.format(summary=summary),
-        messages=messages,
-    ) as stream:
-        for text in stream.text_stream:
-            yield text
+        contents=_history_to_contents(history, question),
+        config=types.GenerateContentConfig(
+            system_instruction=CHAT_SYSTEM.format(summary=summary),
+        ),
+    )
+    for chunk in stream:
+        if chunk.text:
+            yield chunk.text
 
 
 def profiles_to_display_df(profiles: list[dict[str, Any]]) -> pd.DataFrame:
@@ -166,7 +184,7 @@ def profiles_to_display_df(profiles: list[dict[str, Any]]) -> pd.DataFrame:
 def main() -> None:
     st.set_page_config(page_title="AI Analyst", page_icon="📊", layout="wide")
     st.title("AI Analyst")
-    st.caption("Upload a dataset for automated profiling and Claude-powered insights.")
+    st.caption("Upload a dataset for automated profiling and Gemini-powered insights.")
 
     uploaded = st.file_uploader(
         "Upload a CSV or Excel file",
@@ -207,14 +225,14 @@ def main() -> None:
     client = get_client()
 
     if "analysis" not in st.session_state:
-        with st.spinner("Asking Claude to analyze the profiling summary…"):
+        with st.spinner("Asking Gemini to analyze the profiling summary…"):
             try:
-                st.session_state.analysis = analyze_with_claude(client, summary_text)
+                st.session_state.analysis = analyze_with_gemini(client, summary_text)
             except Exception as exc:
-                st.error(f"Claude API error: {exc}")
+                st.error(f"Gemini API error: {exc}")
                 return
 
-    st.subheader("Claude analysis")
+    st.subheader("Gemini analysis")
     st.markdown(st.session_state.analysis)
 
     st.subheader("Data preview")
@@ -251,7 +269,7 @@ def main() -> None:
                     )
                 )
             except Exception as exc:
-                reply = f"Sorry, something went wrong talking to Claude: {exc}"
+                reply = f"Sorry, something went wrong talking to Gemini: {exc}"
                 st.error(reply)
         st.session_state.chat_history.append({"role": "assistant", "content": reply or ""})
 
