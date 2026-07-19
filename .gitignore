@@ -24,13 +24,6 @@
 .DS_Store
 *.pem
 
-# python / streamlit (ai-analyst)
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-ai-analyst/.streamlit/secrets.toml
-
 # debug
 npm-debug.log*
 yarn-debug.log*
