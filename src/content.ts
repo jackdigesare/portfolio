@@ -9,7 +9,7 @@ export const site = {
   tagline: "Designer & developer.",
   location: "New York, NY",
   about:
-    "I build simple, usable digital products. This site is a work in progress.",
+    "I build simple, usable digital tools. This site is a work in progress.",
   social: {
     github: "https://github.com/jackdigesare",
     linkedin: "https://www.linkedin.com/in/jackdigesare",
@@ -24,7 +24,7 @@ export const projects = [
     href: "https://ai-analyst-assistants.streamlit.app/",
   },
   {
-    title: "Fantasy Intel",
+    title: "Fantasy Football Intel",
     description:
       "Streamlit app to download current Sleeper fantasy football rosters as CSV or Excel.",
     href: "https://fantasy-intel.streamlit.app/",
