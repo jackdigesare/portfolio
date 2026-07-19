@@ -12,7 +12,7 @@ export const site = {
     "I build simple, usable digital products. This site is a work in progress.",
   social: {
     github: "https://github.com/jackdigesare",
-    linkedin: "https://www.linkedin.com/in/",
+    linkedin: "https://www.linkedin.com/in/jackdigesare",
   },
 };
 
@@ -22,10 +22,5 @@ export const projects = [
     description:
       "Streamlit app that profiles CSV/Excel data and uses Gemini for insights and follow-up Q&A.",
     href: "https://data-analyst-ai-assistant.streamlit.app/",
-  },
-  {
-    title: "Project two",
-    description: "Short description of what you built.",
-    href: "#",
   },
 ];
