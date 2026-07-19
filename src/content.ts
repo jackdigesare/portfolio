@@ -9,7 +9,7 @@ export const site = {
   tagline: "Designer & developer.",
   location: "New York, NY",
   about:
-    "I build simple, usable digital products. This site is a work in progress.",
+    "I build simple, usable digital tools. This site is a work in progress.",
   social: {
     github: "https://github.com/jackdigesare",
     linkedin: "https://www.linkedin.com/in/jackdigesare",
