@@ -6,31 +6,39 @@ export default function Home() {
   return (
     <>
       <SiteNav />
-      <main id="top" className="mx-auto max-w-xl px-6 py-16 md:py-24">
-        <h1 className="text-3xl font-semibold tracking-tight text-ink">
-          {site.name}
-        </h1>
-        <p className="mt-2 text-muted">Based in {site.location}</p>
+      <main id="top" className="mx-auto max-w-[880px] px-6 py-12 md:py-16">
+        <header className="mb-7">
+          <h1 className="font-serif text-[clamp(2.4rem,7vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-ink">
+            {site.name}
+          </h1>
+          <p className="mt-3 max-w-lg text-[1.08rem] leading-[1.55] text-muted">
+            {site.tagline} Based in {site.location}.
+          </p>
+          <hr className="mt-[1.35rem] border-0 border-t border-line" />
+        </header>
 
-        <section id="about" className="mt-14 scroll-mt-16">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
+        <section id="about" className="mt-10 scroll-mt-16">
+          <h2 className="font-serif text-[1.4rem] font-semibold tracking-[-0.015em] text-ink">
             About
           </h2>
-          <p className="mt-3 text-ink">{site.about}</p>
+          <p className="mt-2 text-ink">{site.about}</p>
         </section>
 
-        <section id="work" className="mt-14 scroll-mt-16">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
+        <section id="work" className="mt-10 scroll-mt-16">
+          <h2 className="font-serif text-[1.4rem] font-semibold tracking-[-0.015em] text-ink">
             Projects
           </h2>
-          <ul className="mt-3 divide-y divide-line border-y border-line">
-            {projects.map((project) => {
+          <ul className="mt-3 overflow-hidden rounded-soft border border-line bg-surface">
+            {projects.map((project, index) => {
               const isExternal = project.href.startsWith("http");
               return (
-                <li key={project.title}>
+                <li
+                  key={project.title}
+                  className={index > 0 ? "border-t border-line" : undefined}
+                >
                   <a
                     href={project.href}
-                    className="block py-4 no-underline"
+                    className="block px-4 py-4 no-underline transition-colors hover:bg-accent/12 hover:text-ink"
                     {...(isExternal
                       ? { target: "_blank", rel: "noreferrer" }
                       : {})}
@@ -46,8 +54,8 @@ export default function Home() {
           </ul>
         </section>
 
-        <section id="contact" className="mt-14 scroll-mt-16">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
+        <section id="contact" className="mt-10 scroll-mt-16">
+          <h2 className="font-serif text-[1.4rem] font-semibold tracking-[-0.015em] text-ink">
             Contact
           </h2>
           <div className="mt-3 text-ink">

@@ -131,5 +131,28 @@ export async function POST(request: Request) {
     );
   }
 
+  const { error: confirmationError } = await resend.emails.send({
+    from,
+    to: [email],
+    replyTo: to,
+    subject: `Thanks for reaching out, ${name}`,
+    text: [
+      `Hi ${name},`,
+      "",
+      "Thanks for your message — I got it and will get back to you soon.",
+      "",
+      "Here's what you sent:",
+      "",
+      message,
+      "",
+      "—",
+      site.name,
+    ].join("\n"),
+  });
+
+  if (confirmationError) {
+    console.error("Resend confirmation error:", confirmationError);
+  }
+
   return NextResponse.json({ ok: true });
 }

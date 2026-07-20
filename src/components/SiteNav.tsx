@@ -56,7 +56,7 @@ export function SiteNav() {
         aria-label="Sections"
         className="sticky top-0 z-20 border-b border-line bg-bg/90 backdrop-blur-sm"
       >
-        <div className="mx-auto flex max-w-xl items-center gap-5 px-6 py-3 text-sm">
+        <div className="mx-auto flex max-w-[880px] items-center gap-5 px-6 py-3 text-sm">
           {sections.map((section) => {
             const isActive = activeId === section.id;
             return (
@@ -65,8 +65,8 @@ export function SiteNav() {
                 href={`#${section.id}`}
                 className={
                   isActive
-                    ? "font-medium text-ink no-underline"
-                    : "text-muted no-underline"
+                    ? "font-medium text-ink no-underline hover:text-ink"
+                    : "text-muted no-underline hover:text-ink"
                 }
                 aria-current={isActive ? "true" : undefined}
               >
@@ -80,7 +80,7 @@ export function SiteNav() {
       {showTop ? (
         <a
           href="#top"
-          className="fixed bottom-6 right-6 z-20 rounded border border-line bg-bg px-3 py-2 text-sm text-ink no-underline shadow-sm"
+          className="fixed bottom-6 right-6 z-20 rounded-soft border border-line bg-surface px-3 py-2 text-sm text-ink no-underline hover:bg-accent/12 hover:text-ink"
         >
           Top ↑
         </a>
