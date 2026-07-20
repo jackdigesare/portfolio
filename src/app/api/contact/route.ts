@@ -134,7 +134,6 @@ export async function POST(request: Request) {
   const { error: confirmationError } = await resend.emails.send({
     from,
     to: [email],
-    replyTo: to,
     subject: `Thanks for reaching out, ${name}`,
     text: [
       `Hi ${name},`,
