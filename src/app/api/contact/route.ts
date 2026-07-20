@@ -81,7 +81,12 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
+  if (
+    !email ||
+    email.length > 254 ||
+    !EMAIL_RE.test(email) ||
+    EMAIL_HEADER_CONTROL_RE.test(email)
+  ) {
     return NextResponse.json(
       { error: "Please enter a valid email address." },
       { status: 400 },
@@ -108,7 +113,6 @@ export async function POST(request: Request) {
   const notificationFrom =
     process.env.CONTACT_FROM_EMAIL?.trim() ||
     `${site.name} <contact@jackdigesare.dev>`;
-  const confirmationFrom = `${site.name} <contact@jackdigesare.dev>`;
   const resend = new Resend(apiKey);
 
   const { error } = await resend.emails.send({
@@ -130,28 +134,6 @@ export async function POST(request: Request) {
       { error: "Could not send your message. Please try again." },
       { status: 500 },
     );
-  }
-
-  const { error: confirmationError } = await resend.emails.send({
-    from: confirmationFrom,
-    to: [email],
-    subject: `Thanks for reaching out, ${name}`,
-    text: [
-      `Hi ${name},`,
-      "",
-      "Thanks for your message — I got it and will get back to you soon.",
-      "",
-      "Here's what you sent:",
-      "",
-      message,
-      "",
-      "—",
-      site.name,
-    ].join("\n"),
-  });
-
-  if (confirmationError) {
-    console.error("Resend confirmation error:", confirmationError);
   }
 
   return NextResponse.json({ ok: true });
