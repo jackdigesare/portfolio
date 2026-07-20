@@ -16,15 +16,29 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "72px",
-          background: "#ffffff",
-          color: "#111111",
-          fontFamily: "system-ui, sans-serif",
+          background: "#F9F6F1",
+          color: "#141413",
+          fontFamily: "Georgia, serif",
         }}
       >
-        <div style={{ fontSize: 64, fontWeight: 700, letterSpacing: "-0.03em" }}>
+        <div
+          style={{
+            fontSize: 64,
+            fontWeight: 600,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.05,
+          }}
+        >
           {site.name}
         </div>
-        <div style={{ marginTop: 18, fontSize: 32, color: "#666666" }}>
+        <div
+          style={{
+            marginTop: 18,
+            fontSize: 28,
+            color: "#6F6E69",
+            fontFamily: "system-ui, sans-serif",
+          }}
+        >
           {site.tagline}
         </div>
       </div>

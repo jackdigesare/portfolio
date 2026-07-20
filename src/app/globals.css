@@ -1,18 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #ffffff;
-  --ink: #111111;
-  --muted: #666666;
-  --line: #e5e5e5;
+  --bg: #f9f6f1;
+  --ink: #141413;
+  --muted: #6f6e69;
+  --accent: #c4a484;
+  --surface: #fffcfa;
+  --line: rgba(20, 20, 19, 0.14);
+  --radius: 8px;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
   --color-line: var(--line);
-  --font-sans: var(--font-manrope);
+  --radius-soft: var(--radius);
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-newsreader);
 }
 
 html {
@@ -30,16 +37,17 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-family: var(--font-dm-sans), "Segoe UI", system-ui, sans-serif;
   line-height: 1.6;
 }
 
 a {
   color: inherit;
+  transition: color 160ms ease, background-color 160ms ease, opacity 160ms ease;
 }
 
 a:hover {
-  opacity: 0.65;
+  color: var(--muted);
 }
 
 .contact-form-panel {

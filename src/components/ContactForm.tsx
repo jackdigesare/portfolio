@@ -61,7 +61,7 @@ export function ContactForm({ children }: { children: ReactNode }) {
       <div className="flex flex-wrap gap-x-4 gap-y-2">
         <button
           type="button"
-          className="cursor-pointer border-0 bg-transparent p-0 text-ink hover:opacity-65"
+          className="cursor-pointer border-0 bg-transparent p-0 text-ink transition-colors hover:text-muted"
           aria-expanded={open}
           aria-controls={`${formId}-panel`}
           onClick={() => {
@@ -84,7 +84,7 @@ export function ContactForm({ children }: { children: ReactNode }) {
         <div className="contact-form-panel-inner">
           <form
             id={`${formId}-panel`}
-            className="mt-4 space-y-3"
+            className="mt-4 space-y-3 rounded-soft border border-line bg-surface p-4"
             onSubmit={handleSubmit}
             noValidate
             inert={!open ? true : undefined}
@@ -121,7 +121,7 @@ export function ContactForm({ children }: { children: ReactNode }) {
                 autoComplete="name"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                className="mt-1 w-full border border-line bg-bg px-3 py-2 text-ink outline-none focus:border-ink"
+                className="mt-1 w-full rounded-soft border border-line bg-surface px-3 py-2 text-ink outline-none focus:border-ink"
                 disabled={status === "pending"}
                 tabIndex={open ? undefined : -1}
               />
@@ -143,7 +143,7 @@ export function ContactForm({ children }: { children: ReactNode }) {
                 autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="mt-1 w-full border border-line bg-bg px-3 py-2 text-ink outline-none focus:border-ink"
+                className="mt-1 w-full rounded-soft border border-line bg-surface px-3 py-2 text-ink outline-none focus:border-ink"
                 disabled={status === "pending"}
                 tabIndex={open ? undefined : -1}
               />
@@ -164,7 +164,7 @@ export function ContactForm({ children }: { children: ReactNode }) {
                 maxLength={5000}
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
-                className="mt-1 w-full resize-y border border-line bg-bg px-3 py-2 text-ink outline-none focus:border-ink"
+                className="mt-1 w-full resize-y rounded-soft border border-line bg-surface px-3 py-2 text-ink outline-none focus:border-ink"
                 disabled={status === "pending"}
                 tabIndex={open ? undefined : -1}
               />
@@ -174,7 +174,7 @@ export function ContactForm({ children }: { children: ReactNode }) {
               <button
                 type="submit"
                 disabled={status === "pending"}
-                className="cursor-pointer border border-ink bg-ink px-3 py-2 text-sm text-bg disabled:cursor-not-allowed disabled:opacity-50"
+                className="cursor-pointer rounded-soft border border-ink bg-ink px-3 py-2 text-sm text-surface transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
                 tabIndex={open ? undefined : -1}
               >
                 {status === "pending" ? "Sending…" : "Send message"}
